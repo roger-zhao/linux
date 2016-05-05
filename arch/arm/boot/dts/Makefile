@@ -423,6 +423,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
 	am335x-boneblack-spi0.dtb \
 	am335x-boneblack-replicape.dtb \
 	am335x-boneblack-bbbmini.dtb \
+    am335x-boneblack-forSMT.dtb \
 	am335x-boneblack-overlay.dtb \
 	am335x-boneblack-nhdmi-overlay.dtb \
 	am335x-boneblack-hdmi-overlay.dtb \
@@ -434,7 +435,6 @@ dtb-$(CONFIG_SOC_AM33XX) += \
 	am335x-evm.dtb \
 	am335x-evmsk.dtb \
 	am335x-nano.dtb \
-	am335x-olimex-som.dtb \
 	am335x-pepper.dtb \
 	am335x-lxm.dtb \
 	am335x-chiliboard.dtb

@@ -1,0 +1,165 @@
+/*
+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+ *                    Modified by Mirko Denecke <mirkix@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+
+#include "am33xx.dtsi"
+#include "am335x-bone-common.dtsi"
+#include <dt-bindings/board/am335x-bbw-bbb-base.h>
+#include <dt-bindings/pinctrl/am33xx.h>
+
+/{
+	model = "TI AM335x BeagleBone Black";
+	compatible = "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+};
+
+&ldo3_reg {
+	regulator-min-microvolt = <1800000>;
+	regulator-max-microvolt = <1800000>;
+	regulator-always-on;
+};
+
+&mmc1 {
+	vmmc-supply = <&vmmcsd_fixed>;
+};
+
+&mmc2 {
+	vmmc-supply = <&vmmcsd_fixed>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&emmc_pins>;
+	bus-width = <8>;
+	status = "okay";
+};
+
+&am33xx_pinmux {
+	pru_pins: pinmux_pru_pins {
+		pinctrl-single,pins = <
+			//0x03c 0x35	/* ecap0_in_pwm0_out.pr1_ecap0_ecap_capin, MODE5 | INPUT_PULLUP | PRU, PPM-sum, SBUS, DSM  */
+			0x03c 0x2E	/* gpmc_ad13.pr1_pru0_pru_r30_15, MODE6 | INPUT | PRU, PPM-sum, SBUS, DSM */
+
+			0x0e8 0x25	/* lcd_pclk.pr1_pru1_pru_r30_10, MODE5 | OUTPUT | PRU, CH_1 */
+			0x0e0 0x25	/* lcd_vsync.pr1_pru1_pru_r30_8, MODE5 | OUTPUT | PRU, CH_2 */
+			0x0ec 0x25	/* lcd_ac_bias_en.pr1_pru1_pru_r30_11, MODE5 | OUTPUT | PRU, CH_3 */
+			0x0e4 0x25	/* lcd_hsync.pr1_pru1_pru_r30_9, MODE5 | OUTPUT | PRU, CH_4 */
+			0x0bc 0x25	/* lcd_data7.pr1_pru1_pru_r30_7, MODE5 | OUTPUT | PRU, CH_5 */
+			0x0b8 0x25	/* lcd_data6.pr1_pru1_pru_r30_6, MODE5 | OUTPUT | PRU, CH_6 */
+			0x0b4 0x25	/* lcd_data5.pr1_pru1_pru_r30_5, MODE5 | OUTPUT | PRU, CH_7 */
+			0x0b0 0x25	/* lcd_data4.pr1_pru1_pru_r30_4, MODE5 | OUTPUT | PRU, CH_8 */
+			0x0ac 0x25	/* lcd_data3.pr1_pru1_pru_r30_3, MODE5 | OUTPUT | PRU, CH_9 */
+			0x0a8 0x25	/* lcd_data2.pr1_pru1_pru_r30_2, MODE5 | OUTPUT | PRU, CH_10 */
+			0x0a4 0x25	/* lcd_data1.pr1_pru1_pru_r30_1, MODE5 | OUTPUT | PRU, CH_11 */
+			0x0a0 0x25	/* lcd_data0.pr1_pru1_pru_r30_0, MODE5 | OUTPUT | PRU, CH_12 */
+
+			/*BONE_P8_12 (PIN_OUTPUT_PULLDOWN | MUX_MODE6)*/ /* HC-SR04 TRIG */
+			/*BONE_P8_16 (PIN_INPUT_PULLDOWN | MUX_MODE6)*/ /* HC-SR04 ECHO */
+
+			/*BONE_P9_25 (PIN_INPUT_PULLDOWN | MUX_MODE6)*/ /* MPU9250 INT */
+		>;
+	};
+
+	spi0_pins: pinmux_spi0_pins {
+		pinctrl-single,pins = <
+                  0x150 0x30  /* spi0_sclk, SPI0_SCLK P9_22 */
+                  0x154 0x10  /* spi0_d0, SPI0_MOSI  P9_21 */
+                  0x158 0x30  /* spi0_d1, SPI0_MISO P9_18 */
+                  /* setup a dummy CS for the SPI driver to use, then
+                     setup pin modes for the two real CS lines to
+                     set them pull-up */
+                  0x054 0x07  /* led pin, dummy CS */
+                  0x15C 0x37  /* LSM9DSO_AM CS P9_17 */
+                  0x09C 0x37  /* LSM9DSO_G CS P8_9 */	
+		>;
+	};
+
+	spi1_pins: pinmux_spi1_pins {
+		pinctrl-single,pins = <
+                0x190 0x33      /* mcasp0_aclkx.spi1_sclk, SPI1_SCLK P9_31 */
+                0x194 0x13      /* mcasp0_fsx.spi1_d0, SPI1_MOSI P9_29 */
+                0x198 0x33      /* mcasp0_axr0.spi1_d1, SPI1_MISO P9_30 */
+                /* setup a dummy CS for the SPI driver to use, then
+                   setup pin modes for the four real CS lines to
+                   set them pull-up */
+                0x058 0x07      /* dummy CS */
+				0x164 0x37      /* P9_42 MS5611 CS */
+				0x19C 0x37      /* P9_28 MPU6000 CS */
+				0x044 0x37      /* P9_23 MPU9250 CS */
+				0x030 0x37      /* P8_12 FRAM CS */
+		>;
+	};
+
+	uart4_pins: pinmux_uart4_pins {
+		pinctrl-single,pins = <
+			/* P9_11: gpmc_wait0.uart4_rxd_mux2 */
+			BONE_P9_11 (PIN_INPUT_PULLUP | MUX_MODE6)
+			/* P9_13: gpmc_wpn.uart4_txd_mux2  */
+			BONE_P9_13 (PIN_OUTPUT_PULLDOWN | MUX_MODE6)
+		>;
+	};
+
+	uart5_pins: pinmux_uart5_pins {
+		pinctrl-single,pins = <
+			/* P8_38: lcd_data9.uart5_rxd */
+			BONE_P8_38 (PIN_INPUT_PULLUP | MUX_MODE4)
+			/* P8_37: lcd_data8.uart5_txd */
+			BONE_P8_37 (PIN_OUTPUT_PULLDOWN | MUX_MODE4)
+		>;
+	};
+};
+
+
+&i2c2 {
+	clock-frequency = <400000>;
+};
+
+&spi0 {
+        pinctrl-names = "default";
+	    pinctrl-0 = <&spi0_pins>;
+        ti,pindir-d0-out-d1-in = <1>;
+        status = "okay";
+        spidev@0 {
+                 spi-max-frequency = <24000000>;
+                 reg = <0>;
+                 compatible = "linux,spidev";
+            };
+};
+
+&spi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pins>;
+	status = "okay";
+        ti,pindir-d0-out-d1-in = <1>;
+        spidev@1 {
+                 spi-max-frequency = <24000000>;
+                 reg = <0>;
+                 compatible = "linux,spidev";
+            };
+};
+
+&tscadc {
+	adc {
+		ti,adc-channels = <0 1>;
+	};
+};
+
+&pruss {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pru_pins>;
+	status = "okay";
+};
+
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart4_pins>;
+	status = "okay";
+};
+
+&uart5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart5_pins>;
+	status = "okay";
+};

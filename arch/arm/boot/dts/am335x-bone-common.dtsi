@@ -67,8 +67,8 @@
 
 	user_leds_s0: user_leds_s0 {
 		pinctrl-single,pins = <
-			0x54 (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a5.gpio1_21 */
-			0x58 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a6.gpio1_22 */
+			/*0x54 (PIN_OUTPUT_PULLDOWN | MUX_MODE7)*/	/* gpmc_a5.gpio1_21 */
+			/*0x58 (PIN_OUTPUT_PULLUP | MUX_MODE7)*/	/* gpmc_a6.gpio1_22 */
 			0x5c (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a7.gpio1_23 */
 			0x60 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a8.gpio1_24 */
 		>;
@@ -241,7 +241,7 @@
 	pinctrl-0 = <&i2c0_pins>;
 
 	status = "okay";
-	clock-frequency = <400000>;
+	clock-frequency = <100000>;
 
 	tps: tps@24 {
 		reg = <0x24>;
@@ -264,49 +264,8 @@
 	pinctrl-0 = <&i2c2_pins>;
 
 	status = "okay";
-	clock-frequency = <100000>;
-
-	cape_eeprom0: cape_eeprom0@54 {
-		compatible = "at,24c256";
-		reg = <0x54>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape0_data: cape_data@0 {
-			reg = <0 0x100>;
-		};
-	};
-
-	cape_eeprom1: cape_eeprom1@55 {
-		compatible = "at,24c256";
-		reg = <0x55>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape1_data: cape_data@0 {
-			reg = <0 0x100>;
-		};
-	};
-
-	cape_eeprom2: cape_eeprom2@56 {
-		compatible = "at,24c256";
-		reg = <0x56>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape2_data: cape_data@0 {
-			reg = <0 0x100>;
-		};
-	};
-
-	cape_eeprom3: cape_eeprom3@57 {
-		compatible = "at,24c256";
-		reg = <0x57>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape3_data: cape_data@0 {
-			reg = <0 0x100>;
-		};
-	};
+	clock-frequency = <400000>;
 };
-
 
 /include/ "tps65217.dtsi"
 
@@ -423,29 +382,4 @@
 
 &rtc {
 	system-power-controller;
-};
-
-/* the cape manager */
-/ {
-	bone_capemgr {
-		compatible = "ti,bone-capemgr";
-		status = "okay";
-
-		nvmem-cells = <&baseboard_data &cape0_data &cape1_data &cape2_data &cape3_data>;
-		nvmem-cell-names = "baseboard", "slot0", "slot1", "slot2", "slot3";
-		#slots = <4>;
-
-		/* map board revisions to compatible definitions */
-		baseboardmaps {
-			baseboard_beaglebone: board@0 {
-				board-name = "A335BONE";
-				compatible-name = "ti,beaglebone";
-			};
-
-			baseboard_beaglebone_black: board@1 {
-				board-name = "A335BNLT";
-				compatible-name = "ti,beaglebone-black";
-			};
-		};
-	};
 };

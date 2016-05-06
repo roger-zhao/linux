@@ -86,9 +86,20 @@
                    set them pull-up */
                 0x058 0x07      /* dummy CS */
 				0x164 0x37      /* P9_42 MS5611 CS */
-				0x19C 0x37      /* P9_28 MPU6000 CS */
 				0x044 0x37      /* P9_23 MPU9250 CS */
 				0x030 0x37      /* P8_12 FRAM CS */
+                /*start --- add by ZhaoYJ@2016-05-06*/
+                /*MS5803 CS*/
+				0x19C 0x37      /* spi1_cs0, GPIO3_17, P9_28, PULL_UP, change from MPU6000 CS to MS5803 CS for SMT*/
+                /*Control enable*/
+                0x1A4 0x27     /* mcasp0_fsr, GPIO3_19, P9_27, PULL_DOWN, add for VCC_3V3_C_EN*/
+                0x078 0x27     /* gpmc_be1n, GPIO1_28, P9_12, PULL_DOWN, add for OUTPUT_EN*/
+                /*LEDs & ALARM*/
+                0x040 0x27     /* gpmc_a0, GPIO1_16, P9_15, PULL_DOWN, add for LED_USER1*/
+                0x1AC 0x27     /* mcasp0_ahclkr, GPIO3_21, P9_25, PULL_DOWN, add for LED_USER2*/
+                0x0C8 0x27     /* lcd_data10, GPIO2_16, P8_36, PULL_DOWN, add for buzzer ALARM*/
+                /*end --- add by ZhaoYJ@2016-05-06*/
+
 		>;
 	};
 
